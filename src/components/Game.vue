@@ -1,7 +1,7 @@
 <template>
   <div class="hello">
 <p>Points: {{this.points}}</p>
-<canvas id="myCanvas" :width="canvasWidth" :height="canvasHeight" style="border:1px solid #d3d3d3;" @keydown="test()">
+<canvas id="myCanvas" :width="canvasWidth" :height="canvasHeight" @keydown="test()">
 Your browser does not support the HTML5 canvas tag.</canvas>
 
 <p>copyright by PZ</p>
@@ -17,6 +17,22 @@ Your browser does not support the HTML5 canvas tag.</canvas>
   Initial Speed [ticks/min]<el-slider v-model="speed" show-input :min="30" :max="600" @change="settingsChanged=true"></el-slider>
   Speed Boost [%] <el-slider v-model="speedBoost" show-input :min="0" :max="50" @change="settingsChanged=true"></el-slider>
   Speed Boost Interval [point] <el-slider v-model="speedBoostInterval" show-input :min="1" :max="100" @change="settingsChanged=true"></el-slider>
+<el-upload
+  class="upload-demo"
+  action=""
+  ref="upload"   
+  :auto-upload="false" :multiple="false" :on-change="newImage">
+  <el-button  slot="trigger" size="small" type="primary">upload new background image</el-button>
+  
+  <div class="el-upload__tip" slot="tip">jpg/png files</div>
+</el-upload>
+ 
+
+
+</div>
+
+<div id="bg">
+  <img :src="image" :alt="image">
 </div>
 
 </div>
@@ -352,7 +368,9 @@ export default {
       speedBoostInterval: 10,
       gameOver: false,
 
-      settingsChanged: false
+      settingsChanged: false,
+
+      image: "../assets/maroko.jpg"
 
     
 
@@ -375,11 +393,18 @@ export default {
     }
   },
   methods: {
+    newImage(response,file,fileList)
+    {
+      console.log(file[0].name);
+      console.log(file[0].url);
+      this.image=file[0].url;
+    },
     resetCanvas()
     {
       delete this.canvas;
       this.canvas = new Canvas(this.size,this.maxx,this.maxy,this.bgcolor,this.ctx);
       this.resetGame();
+      
     },
     resetGame()
     {
@@ -517,6 +542,10 @@ export default {
 
 <!-- Add "scoped" attribute to limit CSS to this component only -->
 <style scoped>
+#myCanvas {
+  border:1px solid #d3d3d3;
+  opacity: .9;
+}
 h3 {
   margin: 40px 0 0;
 }
@@ -533,10 +562,42 @@ a {
 }
 .settings
 {
-  width: 50%;
-  background-color: #eeeeee;
+  width: 50vh;
+  background-color: #cccccc;
   margin: auto;
-  padding: 5px;
+  padding: 10px;
+  opacity: .7;
+  border-radius: 10px;
+}
+
+#bg {
+  position: fixed; 
+  top: -50%; 
+  left: -50%; 
+  width: 200%; 
+  height: 200%;
+  z-index: -1;
+}
+#bg img {
+  position: absolute; 
+  top: 0; 
+  left: 0; 
+  right: 0; 
+  bottom: 0; 
+  margin: auto; 
+  min-width: 50%;
+  min-height: 50%;
+  opacity: .9;
+}
+.alert  {
+  color: #000000;
+  background-image: linear-gradient(#444444, #eeeeee);
+  width: 30vh;  
+  margin: auto;
+  margin-bottom: 5px;
+  padding: 2px;
+  opacity: .4;
+  border-radius: 10px;
 }
 </style>
 
