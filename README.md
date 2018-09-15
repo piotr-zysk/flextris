@@ -20,6 +20,6 @@ npm run build
 npm run lint
 ```
 
-#demo
+demo:
 
-##https://flextris.azurewebsites.net/tetris/
+https://flextris.azurewebsites.net/tetris/
